@@ -1,15 +1,87 @@
-const webshot = require('webshot');
-const validUrl = require('valid-url');
-const psl = require('psl');
-const fs = require('fs');
-const {STATUS_DONE,STATUS_ERROR,STATUS_PROCESSING,STATUS_WAITING} = require('./config');
+const webshot = require('webshot'); // to take screenshot of website
+const validUrl = require('valid-url'); // to valid url
+const psl = require('psl'); // to quick get domain from url
+const {extractHostname} = require('./helpers');
+const { STATUS_DONE, STATUS_ERROR, STATUS_PROCESSING, STATUS_WAITING, STATUS_SKIPPED,
+  ERR_CODE_URL_NOT_SUPPORTED, ERR_CODE_CONNECTION_TIMEOUT, ERR_CODE_INVALID_URL, ERR_CODE_UNKNOWN,
+  DOMAIN_BLACKLIST, CONNECTION_TIMEOUT, WEBSHOT_CONFIG} = require('./config');
 
-exports.Url = function({parent, url, status=STATUS_WAITING, next}){
-  this.parent = parent;
+
+
+// constructor definition
+exports.Url = function({parent, url, col, status=STATUS_WAITING, next}){
+  this.$parent = parent;
   this.url = url;
+  this.col = col;
   this.status = status;
   this.next = next;
-  this.errCode = '';
-  this.errMsg = '';
+  this.errCode = null;
+  this.nextCalled = false;
 };
 
+
+// if error || conn.timeout leave some error
+exports.Url.prototype.error = function(status, errCode){
+  this.status = status; // update status
+  this.errCode = errCode;
+  console.log(`[ERROR] ${errCode} (${this.field()}) => "${this.url}"`);
+  this.next(this); // because we want access to this.$parent.row, etc.
+};
+
+
+// connection timeout handler
+exports.Url.prototype.check = function(){
+  if(!this.nextCalled) {
+    this.error(STATUS_ERROR,ERR_CODE_CONNECTION_TIMEOUT);
+    this.next(this);
+  }
+  // everything it's ok :)
+};
+
+
+// test if url is valid
+exports.Url.prototype.test = function(){
+  // check if it's web url
+  if(!validUrl.isWebUri(this.url) || extractHostname(this.url)==undefined){
+    this.error(STATUS_ERROR, ERR_CODE_INVALID_URL);
+    return false;
+  }
+  // check if domain is on the blacklist
+  if(DOMAIN_BLACKLIST.indexOf(psl.get(extractHostname(this.url))) != -1){
+    this.error(STATUS_ERROR, ERR_CODE_URL_NOT_SUPPORTED);
+    return false;
+  }
+  return true; // everything is ok :)
+};
+
+
+//get screenshot
+exports.Url.prototype.get = function(){
+  // if element has status == skipped (based on excel) just call next element
+  if(this.status==STATUS_SKIPPED) {
+    this.next(this);
+    return;
+  }
+  // if element has status == waiting just get webshot :)
+  if(this.status==STATUS_WAITING){
+    if(this.test()){// test if url is valid
+      this.status = STATUS_PROCESSING;
+      setTimeout(this.check.bind(this), CONNECTION_TIMEOUT);
+      webshot(this.url,`${this.field()}.jpg`, WEBSHOT_CONFIG, function(err){ // take screenShot :)
+        if(err){
+          this.error(STATUS_ERROR, ERR_CODE_UNKNOWN); // unknown error :(
+        } else {
+          console.log(`[DONE] (${this.field()}) => "${this.url}"`);// everything it's OK
+        }
+      }.bind(this));
+    }
+  }
+};
+
+
+
+
+// helper to get e.g. 3A, 5F etc.
+exports.Url.prototype.field = function(){
+  return `${this.$parent.row}${this.col}`;
+};
