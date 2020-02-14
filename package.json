@@ -1,0 +1,13 @@
+{
+  "name": "node-pci-shopinglist-pdf-generator",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "convert-excel-to-json": "^1.6.1",
+    "fs": "^0.0.1-security",
+    "pdfmake": "^0.1.64",
+    "psl": "^1.7.0",
+    "valid-url": "^1.0.9",
+    "webshot": "^0.18.0"
+  }
+}
