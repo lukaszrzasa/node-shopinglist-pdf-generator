@@ -3,3 +3,5 @@
 node_modules
 excel.xlsx
 images
+output.pdf
+core/output.json
