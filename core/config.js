@@ -14,17 +14,31 @@ exports.ERR_CODE_UNKNOWN = 'UNKNOWN ERROR';
 // domain blacklist (those websites don't work :( - no webshot support)
 exports.DOMAIN_BLACKLIST = [
   'leroymerlin.pl',
-  'tantis.pl'
+  'tantis.pl',
 ];
 
-exports.CONNECTION_TIMEOUT = 7000; // to minimize detection of anti-bot system :)
+exports.CONNECTION_TIMEOUT = 10000; // to minimize detection of anti-bot system :)
 
 // webshot
-
 exports.WEBSHOT_CONFIG = {
-  'screenSize': {
+  screenSize: {
     'width': 1920,
     'height': 1080
   },
-  'userAgent': "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:68.0) Gecko/20100101 Firefox/68.0"
+  userAgent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:68.0) Gecko/20100101 Firefox/68.0",
+};
+
+// excel
+exports.EXCEL_CONFIG = {
+  SOURCE_FILE: 'excel.xlsx',
+  SKIPPED_VALUE:'SKIP',
+  //
+  key_name: 'A',
+  key_amount: 'B',
+  key_price: 'C',
+  key_priceTotal: 'D',
+  key_url1: 'E',
+  key_url2: 'F',
+  key_details: 'G',
+  key_skipped: 'I',
 };
