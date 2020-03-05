@@ -41,7 +41,7 @@ Oczywiście nie traktuj tego akapitu jak instrukcję użytkowania. Należy wcze�
 3. Aby uruchomić generowanie zdjęć na podstawie tych danych, należy wpisać w konsoli polecenie `node get-images.js`. Skrypt będzie działał od kilku sekund do kilkunastu minut. Oczywiście wszystko dzieje się w tle - jednocześnie możesz robić co kolwiek tylko chcesz ;)
 4. W trakcie jego działania będziesz informowany o tym, jak przebiega cały proces.
 ![](https://i.imgur.com/JoXLpvO.png)
-5. Na zamym końcu pojawi się tabela ze szczegółową informacją o błędach (o ile takowe się pojawią).
+5. Na samym końcu pojawi się tabela ze szczegółową informacją o błędach (o ile takowe się pojawią).
 ![](https://i.imgur.com/QwLNMR4.png)
 6. W ramach działania programu powstał nowy plik `output.json`, zawiera informacje, które posłużą do wygenerowania PDFa
 7. Aby wygenerować PDFa należy teraz wpisać polecenie `node make-pdf.js`.
