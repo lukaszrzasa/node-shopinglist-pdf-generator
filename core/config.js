@@ -11,29 +11,27 @@ exports.ERR_CODE_INVALID_URL = 'INVALID URL';
 exports.ERR_CODE_URL_NOT_SUPPORTED = 'URL IS NOT SUPPORTED'; // based on config.js file - some websites are not supported by webshot library and webshot don't give us any error
 exports.ERR_CODE_UNKNOWN = 'UNKNOWN ERROR';
 
-// domain blacklist (those websites don't work :( - no webshot support)
+//if you're sure that some domain doesn't work, just add it to this array
 exports.DOMAIN_BLACKLIST = [
-  'leroymerlin.pl',
-  'tantis.pl',
 ];
 
-exports.CONNECTION_TIMEOUT = 10000; // to minimize detection of anti-bot system :)
+exports.CONNECTION_TIMEOUT = 10000; // to minimize detection of anti-bot system :) // it should be fast to implement not recomended solution
 
 // webshot
 exports.WEBSHOT_CONFIG = {
-  screenSize: {
+  screenSize: {//screenshot size
     'width': 1920,
     'height': 1080
   },
-  userAgent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:68.0) Gecko/20100101 Firefox/68.0",
+  userAgent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:68.0) Gecko/20100101 Firefox/68.0",// I've just copy this from my browser
 };
 
 // excel
 exports.EXCEL_CONFIG = {
   SOURCE_FILE: 'excel.xlsx',
-  SKIPPED_VALUE:'SKIP',
+  SKIPPED_VALUE:'SKIP',//js will search for this value (it can be 1, true, etc
   //
-  key_name: 'A',
+  key_name: 'A',//eg. A1, A2, A3, A3...
   key_amount: 'B',
   key_price: 'C',
   key_priceTotal: 'D',

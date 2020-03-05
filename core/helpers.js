@@ -1,3 +1,4 @@
+// helper function from stackoverflow
 exports.extractHostname = function(url) {
   let hostname;
   if (url.indexOf("//") > -1) hostname = url.split('/')[2];

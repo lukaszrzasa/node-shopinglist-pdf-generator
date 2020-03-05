@@ -14,7 +14,7 @@ exports.Row = function({index, row}){
     url:row[key_url1],
     col:key_url1,
     status:this.status,
-  });
+  });// I know, this code can be better ;)
   this.url2 = new Url({
     parent:this,
     url:row[key_url2],
